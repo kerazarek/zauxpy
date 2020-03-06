@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+
+ZAUX_MODULE_RHSDATA_IMPORTED = True
+
 class RHSData:
 
     def load(self):
@@ -65,24 +69,24 @@ class RHSData:
         assert self.is_loaded
         self._chan_names = [c['native_channel_name'] for c in self.amplifier_channels]
         return self._chan_names
-    
+
     def plot_simple_traces(self,
                            stim_chan_name,
                            plot_chan_names,
-                           do_save=False, 
-                           plot_root=pathlib.Path.cwd(), 
-                           plot_stem="simple_traces", 
-                           # plot_stem_temp="{0.rhs_path.parent.name}.{0.trial_idx:03d}.simple_traces", 
+                           do_save=False,
+                           plot_root=pathlib.Path.cwd(),
+                           plot_stem="simple_traces",
+                           # plot_stem_temp="{0.rhs_path.parent.name}.{0.trial_idx:03d}.simple_traces",
                            plot_ext='png',
                            plot_suptitle=None,
                            plot_size=(50, 30),
                            do_zoom=True):
-        
+
         assert self.is_loaded
-        
+
         stim_chan_idx = self.chan_names.index(stim_chan_name)
         plot_chan_idxs = [self.chan_names.index(n) for n in plot_chan_names]
-        
+
         nsr, nsc = len(plot_chan_idxs) + 1, 1
         fig, ax = plt.subplots(nsr, nsc, sharex=True, figsize=plot_size, constrained_layout=True)
         for sp in range(nsr):
@@ -102,7 +106,7 @@ class RHSData:
         # plt.set_ylabel("Stim ($\mu$V)")
         ax[sp].set_xlabel("time (sec)")
         # fig.show()
-        
+
         if True:
             ax[4].set_title("B-014 [stim]", fontweight='bold', color=(0.8, 0, 0))
             ax[7].set_title("B-017 [rec]", fontweight='bold', color=(0, 0.5, 0))
@@ -118,11 +122,11 @@ class RHSData:
             fig.suptitle(plot_suptitle, fontsize=16)
 
         if do_save:
-            
+
             if not isinstance(plot_root, pathlib.Path):
                 plot_root = pathlib.Path(plot_root)
             assert plot_root.is_dir()
-            
+
             # plot_stem = plot_stem_temp.format(self)
             plot_path = plot_root / f"{plot_stem}.{plot_ext}"
             _, t = msg(f"saving plot to ``{plot_path}...")
@@ -137,18 +141,17 @@ class RHSData:
 
             self.simple_traces_plot_path = plot_path
             # self.simple_traces_plot_pkl = plot_pkl
-            
+
         if do_zoom:
             # plt.xlim(self.t_stim_i - 0.05, self.t_stim_i + 0.1)
             plt.xlim(self.t_stim_i - 0.005, self.t_stim_i + 0.01)
-            
+
             if do_save:
                 plot_path = plot_path.parent / f"{plot_path.stem}_zoom.{plot_ext}"
                 _, t = msg(f"saving zoomed plot to ``{plot_path}...")
                 fig.savefig(plot_path)
-                msg(f"saved plot in {localnow() - t}")                
+                msg(f"saved plot in {localnow() - t}")
 
         self.simple_traces_plot = [fig, ax]
-        
+
         return self.simple_traces_plot
-            
