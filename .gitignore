@@ -1,0 +1,7 @@
+# .gitignore for zauxpy project
+
+**/__pycache__
+**/*.pyc
+
+# **/*.sublime-workspace
+# **/*.sublime-project
