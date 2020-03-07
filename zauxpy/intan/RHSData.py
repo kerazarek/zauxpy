@@ -1,30 +1,42 @@
 #!/usr/bin/env python
 
+import sys
 import pathlib
+# import matplotlib as mpl
+import matplotlib.pyplot as plt
 
+from ..formatting import msg
+
+_load_intan_path = pathlib.Path(__file__).parent / "from_intan/load_intan_rhs_format"
+sys.path.append(str(_load_intan_path))
+from load_intan_rhs_format_zmod import read_data
+# from .from_intan.load_intan_rhs_format.load_intan_rhs_format_zmod import read_data
 
 ZAUX_MODULE_RHSDATA_IMPORTED = True
+
 
 class RHSData:
 
     def load(self):
 
-        print(">>> ")
+        # print(">>> ")
         self.data = read_data(str(self.rhs_path), verbose=False)
+        print(self.data)
         self.is_loaded = True
         for key, value in self.data.items():
             assert not hasattr(self, key)
             setattr(self, key, value)
 
-        self.stim_chan_name = "B-014"
-        self.plot_chan_names = [f"B-{i:03d}" for i in range(10, 19)]
+        # self.stim_chan_name = "B-013"
+        # self.plot_chan_names = [f"B-{i:03d}" for i in range(10, 19)]
         self.stim_chan_idx = self.chan_names.index(self.stim_chan_name)
         self.plot_chan_idxs = [self.chan_names.index(n) for n in self.plot_chan_names]
 
         self.t_stim_i = self.data['t'][self.data['stim_data'][self.stim_chan_idx, :] != 0][0]
         self.ts_stim_i = list(self.data['t']).index(self.t_stim_i)
 
-    def __init__(self, rhs_path, do_load=False):
+    def __init__(self, rhs_path, do_load=False,
+                 stim_chan_name=None, plot_chan_names=None):
 
         if isinstance(rhs_path, str):
             rhs_path = pathlib.Path(rhs_path)
@@ -32,8 +44,14 @@ class RHSData:
         self.rhs_path = rhs_path
         self.is_loaded = False
         self.simple_traces_plot = None
-        self.stim_chan_name = "B-014"
-        self.plot_chan_names = [f"B-{i:03d}" for i in range(10, 19)]
+        if stim_chan_name is None:
+            self.stim_chan_name = "A-013"
+        else:
+            self.stim_chan_name = stim_chan_name
+        if plot_chan_names is None:
+            self.plot_chan_names = [f"A-{i:03d}" for i in range(10, 19)]
+        else:
+            self.plot_chan_names = plot_chan_names
         if do_load:
             self.load()
 
