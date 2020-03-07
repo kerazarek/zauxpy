@@ -6,7 +6,7 @@ import zauxpy
 def main():
     # print(...)
 
-    if False:
+    if True:
         # print(zauxpy.__dict__)
         for key, value in zauxpy.__dict__.items():
             print(key)
@@ -15,6 +15,8 @@ def main():
         print(zauxpy.intan.RHSData)
         # print(zauxpy.RHSData)
         print(zauxpy.formatting.sinum(12435234523))
+
+
 
 
 if __name__ == "__main__":
