@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import pathlib
+
+
 ZAUX_MODULE_RHSDATA_IMPORTED = True
 
 class RHSData:

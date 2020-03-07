@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from .formatting import *
-from .intan import *
+import zauxpy.formatting
+import zauxpy.intan
 
 ZAUX_PACKAGE_IMPORTED = True

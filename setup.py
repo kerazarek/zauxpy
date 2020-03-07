@@ -10,5 +10,6 @@ setup(
     author_email="zarek.siegel@gmail.com",
     license="",
     packages=["formatting", "intan"],
+    install_requires=["pathlib"],
     zip_safe=False
 )
